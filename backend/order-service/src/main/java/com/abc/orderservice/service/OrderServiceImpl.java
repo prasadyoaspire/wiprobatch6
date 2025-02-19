@@ -27,6 +27,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private CustomerApiClient customerApiClient;
+	
+	@Autowired
+	private MobileApiClient mobileApiClient;
 
 	@Override
 	public Order placeOrder(int customerId, List<OrderItem> orderItems) {
@@ -43,9 +49,12 @@ public class OrderServiceImpl implements OrderService {
 			int mobileId = item.getMobileId();
 			int qty = item.getQty();
 
-			ResponseEntity<MobileDTO> responseEntity = restTemplate.
-					getForEntity("http://localhost:8081/mobile/" + mobileId, MobileDTO.class);
-			MobileDTO mobile = responseEntity.getBody();
+//			ResponseEntity<MobileDTO> responseEntity = restTemplate.
+//					getForEntity("http://MOBILE-SERVICE/mobile/" + mobileId, MobileDTO.class);
+//			MobileDTO mobile = responseEntity.getBody();
+			
+			MobileDTO mobile = mobileApiClient.getMobileDetails(mobileId);
+			
 			double mobilePrice = mobile.getPrice();
 
 			// calculate orderItem total
@@ -90,10 +99,14 @@ public class OrderServiceImpl implements OrderService {
 		
 		int customerId = order.getCustomerId();
 		
-		ResponseEntity<CustomerDTO> responseEntity = restTemplate.
-				getForEntity("http://localhost:8082/customer/"+customerId, CustomerDTO.class);
+//		ResponseEntity<CustomerDTO> responseEntity = restTemplate.
+//				getForEntity("http://localhost:8082/customer/"+customerId, CustomerDTO.class);
+	
+//		ResponseEntity<CustomerDTO> responseEntity = restTemplate.
+//				getForEntity("http://CUSTOMER-SERVICE/customer/"+customerId, CustomerDTO.class);		
+//		CustomerDTO customer = responseEntity.getBody();
 		
-		CustomerDTO customer = responseEntity.getBody();
+		CustomerDTO customer = customerApiClient.getCustomerDetails(customerId);
 		
 		invoice.setCustomer(customer);
 		
@@ -110,10 +123,14 @@ public class OrderServiceImpl implements OrderService {
 			
 			int mobileId = orderItem.getMobileId();
 			
-			ResponseEntity<MobileDTO> mobileResponseEntity = 
-					restTemplate.getForEntity("http://localhost:8081/mobile/" + mobileId, MobileDTO.class);
+//			ResponseEntity<MobileDTO> mobileResponseEntity = 
+//					restTemplate.getForEntity("http://localhost:8081/mobile/" + mobileId, MobileDTO.class);
 			
-			MobileDTO mobile = mobileResponseEntity.getBody();
+//			ResponseEntity<MobileDTO> mobileResponseEntity = 
+//					restTemplate.getForEntity("http://MOBILE-SERVICE/mobile/" + mobileId, MobileDTO.class);		
+//			MobileDTO mobile = mobileResponseEntity.getBody();
+			
+			MobileDTO mobile = mobileApiClient.getMobileDetails(mobileId);
 					
 			orderItemDTO.setMobile(mobile);
 			
