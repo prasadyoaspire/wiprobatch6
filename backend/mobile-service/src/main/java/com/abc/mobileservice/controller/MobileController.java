@@ -3,6 +3,7 @@ package com.abc.mobileservice.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,10 @@ import com.abc.mobileservice.service.MobileService;
 @RestController
 @RequestMapping("/mobile")
 public class MobileController {
+	
+
+	@Autowired
+	private Environment env;
 
 	@Autowired
 	private MobileService mobileService;
@@ -32,6 +37,9 @@ public class MobileController {
 	
 	@GetMapping("/{mobileId}")
 	public ResponseEntity<Mobile> fetchMobileDetails(@PathVariable int mobileId) {	
+		
+		System.out.println("Mobile Service Running on Port: "+env.getProperty("local.server.port"));		
+		
 		
 		Mobile mobile = mobileService.getMobileById(mobileId);		
 		ResponseEntity<Mobile> responseEntity = new ResponseEntity<>(mobile,HttpStatus.OK);		

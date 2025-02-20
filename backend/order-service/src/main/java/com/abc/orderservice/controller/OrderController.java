@@ -21,6 +21,7 @@ import com.abc.orderservice.service.OrderService;
 @RestController
 @RequestMapping("/order")
 public class OrderController {
+	
 
 	@Autowired
 	private OrderService orderService;
@@ -44,7 +45,7 @@ public class OrderController {
 	@GetMapping("/invoice")
 	public ResponseEntity<InvoiceDTO> createInvoice(@RequestParam("orderId") int orderId) {
 		
-		InvoiceDTO invoiceDto = orderService.generateInvoice(orderId);
+		InvoiceDTO invoiceDto = orderService.generateInvoice(orderId);		
 		
 		return new ResponseEntity<>(invoiceDto,HttpStatus.OK);
 	}

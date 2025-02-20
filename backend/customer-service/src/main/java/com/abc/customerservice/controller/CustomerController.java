@@ -3,6 +3,7 @@ package com.abc.customerservice.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,9 @@ import com.abc.customerservice.service.CustomerService;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
+	
+	@Autowired
+	private Environment env;
 
 	@Autowired
 	private CustomerService customerService;
@@ -30,6 +34,9 @@ public class CustomerController {
 	
 	@GetMapping("/{customerId}")
 	public ResponseEntity<Customer> fetchCustomerDetails(@PathVariable int customerId) {
+		
+		System.out.println("Customer Service Running on Port: "+env.getProperty("local.server.port"));
+		
 		Customer customer = customerService.getCustomerById(customerId);
 		return new ResponseEntity<>(customer,HttpStatus.OK);
 	}
