@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.abc.jwtsecurity.entity.UserEntity;
+import com.abc.jwtsecurity.model.LoginDTO;
 import com.abc.jwtsecurity.service.AuthService;
 
 @RestController
@@ -24,5 +25,13 @@ public class AuthController {
 		authService.register(userEntity);
 		
 		return new ResponseEntity<>(userEntity,HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> doLogin(@RequestBody LoginDTO loginDTO) {
+		
+		String token = authService.login(loginDTO.getUsernameOrEmail(), loginDTO.getPassword());
+		
+		return new ResponseEntity<>(token,HttpStatus.OK);
 	}
 }

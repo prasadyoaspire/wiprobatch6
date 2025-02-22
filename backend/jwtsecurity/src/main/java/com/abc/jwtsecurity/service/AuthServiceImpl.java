@@ -5,6 +5,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +16,16 @@ import com.abc.jwtsecurity.entity.RoleEntity;
 import com.abc.jwtsecurity.entity.UserEntity;
 import com.abc.jwtsecurity.repository.RoleRepository;
 import com.abc.jwtsecurity.repository.UserRepository;
+import com.abc.jwtsecurity.util.JwtTokenUtil;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -52,6 +63,22 @@ public class AuthServiceImpl implements AuthService {
 		userRepository.save(userEntity);
 		
 		return userEntity;
+	}
+
+	@Override
+	public String login(String usernameOrEmail, String password) {
+		
+		//write a logic to validate a user with password
+		Authentication authentication = authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(usernameOrEmail, password));
+				
+		//if login is success, generate jwt token and return it
+		
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		
+		String token = jwtTokenUtil.generateToken(authentication);
+		
+		return token;
 	}
 
 }
