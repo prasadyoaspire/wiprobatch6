@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Optional<UserEntity> optionalUserEntity = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
 		
 		if(optionalUserEntity.isEmpty()) {
-			throw new UsernameNotFoundException("User not exisiting");
+			throw new UsernameNotFoundException("User not existing");
 		}
 		
 		UserEntity userEntity = optionalUserEntity.get();		

@@ -3,6 +3,8 @@ package com.abc.jwtsecurity.util;
 import java.security.Key;
 import java.util.Date;
 
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -37,5 +39,26 @@ public class JwtTokenUtil {
     private Key key(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
+    
+    // validate JWT token
+    public boolean validateToken(String token){
+    	Jwts.parser()
+            .verifyWith((SecretKey) key())
+            .build()
+            .parse(token);
+    	return true;
+    }
+    
+    // get username from JWT token
+    public String getUsername(String token) {
+
+        return Jwts.parser()
+                .verifyWith((SecretKey) key())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }      
+
 
 }
