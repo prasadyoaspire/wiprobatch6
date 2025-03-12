@@ -13,7 +13,7 @@ import com.abc.mobilestore.model.CartItemRequest;
 import com.abc.mobilestore.service.CartService;
 
 @RestController
-@RequestMapping("/cart")
+@RequestMapping("/api/cart")
 public class CartController {
 
 	@Autowired

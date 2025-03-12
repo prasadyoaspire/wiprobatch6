@@ -11,5 +11,9 @@ public interface MobileService {
 	Mobile getMobileById(int mobileId);
 	
 	List<Mobile> getAllMobiles();
+	
+	Mobile updateMobile(Mobile mobile);
+	
+	void deleteMobile(int mobileId);
 
 }

@@ -13,7 +13,7 @@ import com.abc.mobilestore.entity.Order;
 import com.abc.mobilestore.service.OrderService;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/api/order")
 public class OrderController {
 
 	@Autowired
